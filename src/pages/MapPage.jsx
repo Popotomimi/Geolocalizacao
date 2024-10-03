@@ -7,11 +7,12 @@ const MapPage = () => {
     googleMapsApiKey: "AIzaSyCuSfLFwPPEEmWJy1Lv8QRlxWvzoCq1Tdc",
   });
 
-  const [location, setLocation] = useState({
+  const [location, setLocation] = useState(null);
+  const [timestamp, setTimestamp] = useState(null);
+  const [initialLocation, setInitialLocation] = useState({
     lat: -23.591485,
     lng: -46.688377,
   });
-  const [timestamp, setTimestamp] = useState(null);
 
   /* ************************************ */
 
@@ -119,7 +120,7 @@ const MapPage = () => {
       {isLoaded ? (
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "400px" }}
-          center={location}
+          center={location ? location : initialLocation}
           zoom={15}>
           <Marker position={location} />
         </GoogleMap>
