@@ -39,7 +39,7 @@ const MapPage = () => {
   };
 
   return (
-    <div className="container" style={{ width: "100vw", height: "100vh" }}>
+    <div className="container">
       <h1>Bata seu ponto</h1>
       <button onClick={handleButtonClick}>
         Registrar Localização e Horário
@@ -54,7 +54,11 @@ const MapPage = () => {
       )}
       {isLoaded ? (
         <GoogleMap
-          mapContainerStyle={{ width: "100%", height: "400px" }}
+          mapContainerStyle={{
+            width: "100%",
+            height: "400px",
+            margin: "10 auto",
+          }}
           center={location ? location : initialLocation}
           zoom={15}>
           <Marker position={location} />
