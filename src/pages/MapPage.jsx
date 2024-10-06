@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 const MapPage = () => {
@@ -14,80 +14,27 @@ const MapPage = () => {
     lng: -46.688377,
   });
 
-  /* ************************************ */
-
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-
-  /* *********************************** */
-
   const handleButtonClick = () => {
     if (navigator.geolocation) {
-      if (
-        typeof navigator.geolocation.requestGeolocationPermission === "function"
-      ) {
-        navigator.geolocation
-          .requestGeolocationPermission()
-          .then(() => {
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                setLocation({
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude,
-                });
-                setTimestamp(new Date().toLocaleString());
-              },
-              (error) => {
-                console.error("Error getting location:", error);
-              },
-              {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0,
-              }
-            );
-          })
-          .catch((error) => {
-            console.error("Error requesting geolocation permission:", error);
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                setLocation({
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude,
-                });
-                setTimestamp(new Date().toLocaleString());
-              },
-              (error) => {
-                console.error("Error getting location:", error);
-              },
-              {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0,
-              }
-            );
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
           });
-      } else {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setLocation({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            });
-            setTimestamp(new Date().toLocaleString());
-          },
-          (error) => {
-            console.error("Error getting location:", error);
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0,
-          }
-        );
-      }
+          setTimestamp(new Date().toLocaleString());
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        }
+      );
     } else {
-      setError("Geolocation is not supported by your browser.");
+      console.error("Geolocation is not supported by your browser.");
     }
   };
 
@@ -101,7 +48,7 @@ const MapPage = () => {
         <div>
           <p>Data e Horário: {timestamp}</p>
           <p>
-            Localização no mapa: {location.lat}, {location.lng}{" "}
+            Localização no mapa: {location?.lat}, {location?.lng}
           </p>
         </div>
       )}
