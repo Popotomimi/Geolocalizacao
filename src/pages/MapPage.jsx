@@ -19,20 +19,23 @@ const MapPage = () => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
-  useEffect(() => {
+  /* *********************************** */
+
+  const handleButtonClick = () => {
     if (navigator.geolocation) {
       if (
         typeof navigator.geolocation.requestGeolocationPermission === "function"
       ) {
-        // `requestGeolocationPermission` is supported, use it
         navigator.geolocation
           .requestGeolocationPermission()
           .then(() => {
-            // Permission granted after the request, get the location
             navigator.geolocation.getCurrentPosition(
               (position) => {
-                setLatitude(position.coords.latitude);
-                setLongitude(position.coords.longitude);
+                setLocation({
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                });
+                setTimestamp(new Date().toLocaleString());
               },
               (error) => {
                 console.error("Error getting location:", error);
@@ -46,11 +49,13 @@ const MapPage = () => {
           })
           .catch((error) => {
             console.error("Error requesting geolocation permission:", error);
-            // Fallback for older browsers without requestGeolocationPermission
             navigator.geolocation.getCurrentPosition(
               (position) => {
-                setLatitude(position.coords.latitude);
-                setLongitude(position.coords.longitude);
+                setLocation({
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                });
+                setTimestamp(new Date().toLocaleString());
               },
               (error) => {
                 console.error("Error getting location:", error);
@@ -63,11 +68,13 @@ const MapPage = () => {
             );
           });
       } else {
-        // Fallback for older browsers without requestGeolocationPermission
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            setLatitude(position.coords.latitude);
-            setLongitude(position.coords.longitude);
+            setLocation({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            });
+            setTimestamp(new Date().toLocaleString());
           },
           (error) => {
             console.error("Error getting location:", error);
@@ -82,22 +89,6 @@ const MapPage = () => {
     } else {
       setError("Geolocation is not supported by your browser.");
     }
-  }, []);
-
-  /* *********************************** */
-
-  const handleButtonClick = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-        setTimestamp(new Date().toLocaleString());
-      });
-    } else {
-      alert("Geolocalização não é suportada pelo seu navegador.");
-    }
   };
 
   return (
@@ -106,9 +97,6 @@ const MapPage = () => {
       <button onClick={handleButtonClick}>
         Registrar Localização e Horário
       </button>
-      <p>
-        Latitude: {latitude} Longitude: {longitude}
-      </p>
       {timestamp && (
         <div>
           <p>Data e Horário: {timestamp}</p>
