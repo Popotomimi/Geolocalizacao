@@ -9,6 +9,24 @@
   text-align: center;
 }
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  text-align: left;
+  font-weight: bold;
+  font-size: 0.7rem;
+  margin-bottom: 5px;
+}
+
+.form-container input {
+  padding: 5px;
+  border-radius: 5px;
+}
+
 button {
   padding: 10px;
   background-color: #222;
@@ -18,7 +36,6 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  transform: 0.5s;
   transition: 0.5s;
 }
 
@@ -27,4 +44,17 @@ button:hover {
   background-color: #fff;
   color: #222;
   border: solid 2px #222;
+}
+
+.map-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.map {
+  width: 90%;
+  height: 400px;
 }
