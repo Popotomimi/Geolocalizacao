@@ -3,7 +3,7 @@ const User = require("../models/User");
 module.exports = class userController {
   static async register(req, res) {
     // Colocando os valores enviado pelo forms em variáveis
-    const { name, email, location, dateTime } = req.body;
+    const { name, email, location, datetime } = req.body;
 
     // Fazendo validações
     if (!name) {
@@ -18,7 +18,7 @@ module.exports = class userController {
       res.status(422).json({ message: "A localização é obrigatória!" });
       return;
     }
-    if (!dateTime) {
+    if (!datetime) {
       res.status(422).json({ message: "A data e as horas são obrigatórias!" });
       return;
     }
@@ -31,6 +31,30 @@ module.exports = class userController {
         message: "E-mail já cadastrado, utilize outro",
       });
       return;
+    }
+
+    // Criando usuário
+    const user = new User({
+      name,
+      email,
+      location,
+      datetime,
+    });
+
+    try {
+      await user.save();
+      res.status(200).json({ message: "Ponto registrado!" });
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  }
+
+  static async getAllUsers(req, res) {
+    try {
+      const users = await User.find();
+      res.status(200).json({ users });
+    } catch (error) {
+      res.status(400).json({ message: error });
     }
   }
 };

@@ -1,5 +1,11 @@
+// Hooks
 import React, { useState } from "react";
+
+// API Google
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+
+// Axios
+import axios from "axios";
 
 const MapPage = () => {
   const { isLoaded } = useJsApiLoader({
@@ -16,17 +22,45 @@ const MapPage = () => {
     lng: -46.688377,
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
+        async (position) => {
+          const newLocation = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
-          });
-          setTimestamp(new Date().toLocaleString());
+          };
+          const newTimestamp = new Date().toLocaleString();
+
+          setLocation(newLocation);
+          setTimestamp(newTimestamp);
+
+          try {
+            const response = await axios.get(
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${newLocation.lat},${newLocation.lng}&key=AIzaSyCuSfLFwPPEEmWJy1Lv8QRlxWvzoCq1Tdc`
+            );
+
+            const address = response.data.results[0].address_components.find(
+              (component) => component.types.includes("route")
+            ).long_name;
+
+            const user = {
+              name,
+              email,
+              location: address,
+              datetime: newTimestamp,
+            };
+
+            const resp = await axios.post(
+              "http://localhost:3333/users/register",
+              user
+            );
+            window.alert(resp.data.message);
+          } catch (error) {
+            console.log(error);
+          }
         },
         (error) => {
           console.error("Error getting location:", error);
