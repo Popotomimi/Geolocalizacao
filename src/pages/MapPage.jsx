@@ -7,6 +7,9 @@ import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 // Axios
 import axios from "axios";
 
+// React-toastfy
+import { toast } from "react-toastify";
+
 const MapPage = () => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -54,10 +57,10 @@ const MapPage = () => {
             };
 
             const resp = await axios.post(
-              "http://localhost:3333/users/register",
+              "https://geo-backend-aspq.onrender.com/users/register",
               user
             );
-            window.alert(resp.data.message);
+            toast.success(resp.data.message);
           } catch (error) {
             console.log(error);
           }
@@ -100,16 +103,6 @@ const MapPage = () => {
         </div>
         <button type="submit">Registrar Localização e Horário</button>
       </form>
-      {timestamp && (
-        <div>
-          <p>Data e Horário: {timestamp}</p>
-          <p>
-            Localização no mapa: {location?.lat}, {location?.lng}
-          </p>
-          <p>Nome: {name} </p>
-          <p>E-mail: {email}</p>
-        </div>
-      )}
       {isLoaded ? (
         <div className="map-container">
           <GoogleMap

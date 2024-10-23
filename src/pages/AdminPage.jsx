@@ -13,7 +13,9 @@ const AdminPage = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:3333/users/getall");
+        const response = await axios.get(
+          "https://geo-backend-aspq.onrender.com/users/getall"
+        );
         setUsers(response.data.users);
       } catch (error) {
         console.log(error);
