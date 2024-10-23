@@ -81,7 +81,7 @@ const MapPage = () => {
 
   return (
     <div className="container">
-      <h1>Bata seu ponto</h1>
+      <h1>Faça o Check in</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-container">
           <label>Digite seu nome</label>
