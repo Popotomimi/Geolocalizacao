@@ -16,6 +16,7 @@ const MapPage = () => {
     googleMapsApiKey: "AIzaSyCuSfLFwPPEEmWJy1Lv8QRlxWvzoCq1Tdc",
   });
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [location, setLocation] = useState(null);
@@ -27,6 +28,7 @@ const MapPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsButtonDisabled(true); // Disable button
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -36,26 +38,21 @@ const MapPage = () => {
             lng: position.coords.longitude,
           };
           const newTimestamp = new Date().toLocaleString();
-
           setLocation(newLocation);
           setTimestamp(newTimestamp);
-
           try {
             const response = await axios.get(
               `https://maps.googleapis.com/maps/api/geocode/json?latlng=${newLocation.lat},${newLocation.lng}&key=AIzaSyCuSfLFwPPEEmWJy1Lv8QRlxWvzoCq1Tdc`
             );
-
             const address = response.data.results[0].address_components.find(
               (component) => component.types.includes("route")
             ).long_name;
-
             const user = {
               name,
               email,
               location: address,
               datetime: newTimestamp,
             };
-
             const resp = await axios.post(
               "https://geo-backend-aspq.onrender.com/users/register",
               user
@@ -63,10 +60,13 @@ const MapPage = () => {
             toast.success(resp.data.message);
           } catch (error) {
             console.log(error);
+          } finally {
+            setIsButtonDisabled(false); // Enable button again
           }
         },
         (error) => {
           console.error("Error getting location:", error);
+          setIsButtonDisabled(false); // Enable button again in case of error
         },
         {
           enableHighAccuracy: true,
@@ -76,6 +76,7 @@ const MapPage = () => {
       );
     } else {
       console.error("Geolocation is not supported by your browser.");
+      setIsButtonDisabled(false); // Enable button again if geolocation is not supported
     }
   };
 
@@ -101,7 +102,9 @@ const MapPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <button type="submit">Registrar</button>
+        <button id="btn" type="submit" disabled={isButtonDisabled}>
+          Registrar
+        </button>
       </form>
       {isLoaded ? (
         <div className="map-container">

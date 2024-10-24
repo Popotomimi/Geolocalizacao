@@ -22,7 +22,7 @@ const AdminPage = () => {
       }
     };
     getUsers();
-  }, []);
+  }, [users]);
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(users);
@@ -44,7 +44,7 @@ const AdminPage = () => {
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id}>
+            <tr key={user._id}>
               <td>{user.name}</td>
               <td>{user.location}</td>
               <td>{user.datetime}</td>
