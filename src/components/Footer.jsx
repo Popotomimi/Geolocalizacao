@@ -17,7 +17,7 @@ const Footer = () => {
         </Link>
       </div>
       <div className="span">
-        <span>Ponto &copy; {year.getFullYear()} </span>
+        <span>Check In &copy; {year.getFullYear()} </span>
       </div>
       <div>
         <p>Veja meus repositórios:</p>

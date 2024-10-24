@@ -101,7 +101,7 @@ const MapPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <button type="submit">Registrar Localização e Horário</button>
+        <button type="submit">Registrar</button>
       </form>
       {isLoaded ? (
         <div className="map-container">
