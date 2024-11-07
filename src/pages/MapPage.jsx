@@ -26,8 +26,8 @@ const MapPage = () => {
   });
   const [events, setEvents] = useState([]);
   const [selectedEventId, setSelectedEventId] = useState("");
-  const api = "http://localhost:3333";
-  /* https://geo-backend-aspq.onrender.com */
+  const api = "https://geo-backend-aspq.onrender.com";
+  /* http://localhost:3333 */
 
   useEffect(() => {
     const fetchEvents = async () => {
