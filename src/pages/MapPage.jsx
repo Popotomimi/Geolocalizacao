@@ -129,9 +129,15 @@ const MapPage = () => {
             ))}
           </select>
         </div>
-        <button id="btn" type="submit" disabled={isButtonDisabled}>
-          Registrar
-        </button>
+        {isButtonDisabled ? (
+          <button id="btn" disabled>
+            Aguarde...
+          </button>
+        ) : (
+          <button id="btn" type="submit">
+            Registrar
+          </button>
+        )}
       </form>
       {isLoaded ? (
         <div className="map-container">

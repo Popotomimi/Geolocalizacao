@@ -18,6 +18,7 @@ h1 {
   width: 95%;
   font-family: Helvetica;
   text-align: center;
+  margin-top: 50px;
 }
 
 button {
@@ -81,6 +82,12 @@ nav li a {
   border-radius: 5px;
 }
 
+.form-container select {
+  padding: 5px;
+  border: solid 2px #000;
+  border-radius: 5px;
+}
+
 .map-container {
   width: 100%;
   max-width: 1000px;
@@ -98,6 +105,18 @@ nav li a {
 .admin-page {
   text-align: center;
   padding: 20px;
+}
+
+.admin-page form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-container textarea {
+  border: solid 2px #000;
+  border-radius: 5px;
+  padding: 5px;
+  height: 100px;
 }
 
 .users-table {

@@ -9,10 +9,10 @@ const Navbar = () => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <span>Código do evento: 99887766</span>
+          <span>Check in</span>
         </li>
         <li>
-          <Link to="/admin">Table</Link>
+          <Link to="/admin">Admin</Link>
         </li>
       </ul>
     </nav>

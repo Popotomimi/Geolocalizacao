@@ -7,6 +7,12 @@ import axios from "axios";
 // XLSX
 import * as XLSX from "xlsx";
 
+// Toastfy
+import { toast } from "react-toastify";
+
+// Icons
+import { IoMdDownload } from "react-icons/io";
+
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
   const [events, setEvents] = useState([]);
@@ -42,7 +48,7 @@ const AdminPage = () => {
       }
     };
     getEvents();
-  }, []);
+  }, [events]);
 
   const handleEventChange = (e) => {
     const { name, value } = e.target;
@@ -52,8 +58,9 @@ const AdminPage = () => {
   const handleEventSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${api}/events/create`, newEvent);
+      const resp = await axios.post(`${api}/events/create`, newEvent);
       setNewEvent({ title: "", date: "", location: "", description: "" });
+      toast.success(resp.data.message);
     } catch (error) {
       console.log(error);
     }
@@ -85,40 +92,47 @@ const AdminPage = () => {
 
   return (
     <div className="admin-page">
-      <h1>AdminPage</h1>
-      <h2>Criar Evento</h2>
+      <h1>Criar Evento</h1>
       <form onSubmit={handleEventSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="Título"
-          value={newEvent.title}
-          onChange={handleEventChange}
-          required
-        />
-        <input
-          type="datetime-local"
-          name="date"
-          value={newEvent.date}
-          onChange={handleEventChange}
-          required
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Localização"
-          value={newEvent.location}
-          onChange={handleEventChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Descrição"
-          value={newEvent.description}
-          onChange={handleEventChange}></textarea>
+        <div className="form-container">
+          <input
+            type="text"
+            name="title"
+            placeholder="Título"
+            value={newEvent.title}
+            onChange={handleEventChange}
+            required
+          />
+        </div>
+        <div className="form-container">
+          <input
+            type="datetime-local"
+            name="date"
+            value={newEvent.date}
+            onChange={handleEventChange}
+            required
+          />
+        </div>
+        <div className="form-container">
+          <input
+            type="text"
+            name="location"
+            placeholder="Localização"
+            value={newEvent.location}
+            onChange={handleEventChange}
+            required
+          />
+        </div>
+        <div className="form-container">
+          <textarea
+            name="description"
+            placeholder="Descrição"
+            value={newEvent.description}
+            onChange={handleEventChange}></textarea>
+        </div>
         <button type="submit">Criar Evento</button>
       </form>
-      <h2>Eventos</h2>
+      <h1>Eventos</h1>
       <table className="users-table">
         <thead>
           <tr>
@@ -137,8 +151,10 @@ const AdminPage = () => {
               <td>{event.location}</td>
               <td>{event.description}</td>
               <td>
-                <button onClick={() => exportToExcel(event._id)}>
-                  Exportar Usuários
+                <button
+                  title="Exportar Usuários"
+                  onClick={() => exportToExcel(event._id)}>
+                  <IoMdDownload />
                 </button>
               </td>
             </tr>
