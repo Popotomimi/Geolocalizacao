@@ -1,5 +1,4 @@
-// Hooks
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // API Google
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
@@ -7,7 +6,7 @@ import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 // Axios
 import axios from "axios";
 
-// React-toastfy
+// React-toastify
 import { toast } from "react-toastify";
 
 const MapPage = () => {
@@ -25,10 +24,26 @@ const MapPage = () => {
     lat: -23.591485,
     lng: -46.688377,
   });
+  const [events, setEvents] = useState([]);
+  const [selectedEventId, setSelectedEventId] = useState("");
+  const api = "http://localhost:3333";
+  /* https://geo-backend-aspq.onrender.com */
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(`${api}/events/getall`);
+        setEvents(response.data.events);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsButtonDisabled(true); // Disable button
+    setIsButtonDisabled(true);
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -52,21 +67,19 @@ const MapPage = () => {
               email,
               location: address,
               datetime: newTimestamp,
+              eventId: selectedEventId,
             };
-            const resp = await axios.post(
-              "https://geo-backend-aspq.onrender.com/users/register",
-              user
-            );
+            const resp = await axios.post(`${api}/users/register`, user);
             toast.success(resp.data.message);
           } catch (error) {
             console.log(error);
           } finally {
-            setIsButtonDisabled(false); // Enable button again
+            setIsButtonDisabled(false);
           }
         },
         (error) => {
           console.error("Error getting location:", error);
-          setIsButtonDisabled(false); // Enable button again in case of error
+          setIsButtonDisabled(false);
         },
         {
           enableHighAccuracy: true,
@@ -76,7 +89,7 @@ const MapPage = () => {
       );
     } else {
       console.error("Geolocation is not supported by your browser.");
-      setIsButtonDisabled(false); // Enable button again if geolocation is not supported
+      setIsButtonDisabled(false);
     }
   };
 
@@ -101,6 +114,20 @@ const MapPage = () => {
             required
             onChange={(e) => setEmail(e.target.value)}
           />
+        </div>
+        <div className="form-container">
+          <label>Selecione o Evento</label>
+          <select
+            value={selectedEventId}
+            onChange={(e) => setSelectedEventId(e.target.value)}
+            required>
+            <option value="">Selecione um evento</option>
+            {events.map((event) => (
+              <option key={event._id} value={event._id}>
+                {event.title}
+              </option>
+            ))}
+          </select>
         </div>
         <button id="btn" type="submit" disabled={isButtonDisabled}>
           Registrar

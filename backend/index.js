@@ -10,8 +10,10 @@ app.use(cors({ credentials: true, origin: "*" }));
 app.use(express.json());
 
 const userRoutes = require("./routes/userRoutes");
+const eventRoutes = require("./routes/eventRoutes");
 
 app.use("/users", userRoutes);
+app.use("/events", eventRoutes);
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta: ${port}`);

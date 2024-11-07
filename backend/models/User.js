@@ -21,6 +21,11 @@ const User = mongoose.model(
         type: String,
         required: true,
       },
+      eventId: {
+        type: Schema.Types.ObjectId,
+        ref: "Event",
+        required: true,
+      },
     },
     { timestamps: true }
   )
