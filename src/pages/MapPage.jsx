@@ -17,7 +17,7 @@ const MapPage = () => {
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [location, setLocation] = useState(null);
   const [timestamp, setTimestamp] = useState(null);
   const [initialLocation, setInitialLocation] = useState({
@@ -64,7 +64,7 @@ const MapPage = () => {
             ).long_name;
             const user = {
               name,
-              email,
+              phone,
               location: address,
               datetime: newTimestamp,
               eventId: selectedEventId,
@@ -107,12 +107,12 @@ const MapPage = () => {
           />
         </div>
         <div className="form-container">
-          <label>Digite seu e-mail</label>
+          <label>Digite seu Número de telefone</label>
           <input
-            type="email"
-            placeholder="E-mail"
+            type="text"
+            placeholder="Número de telefone"
             required
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setPhone(e.target.value)}
           />
         </div>
         <div className="form-container">
