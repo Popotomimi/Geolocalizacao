@@ -14,7 +14,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  max-height: 200vh;
   width: 95%;
   font-family: Helvetica;
   text-align: center;
