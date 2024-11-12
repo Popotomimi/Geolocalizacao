@@ -48,7 +48,7 @@ const AdminPage = () => {
       }
     };
     getEvents();
-  }, [events]);
+  }, []);
 
   const handleEventChange = (e) => {
     const { name, value } = e.target;
