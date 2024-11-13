@@ -11,7 +11,8 @@ import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 
 // Icons
-import { IoMdDownload } from "react-icons/io";
+import { IoMdDownload, IoMdTrash } from "react-icons/io";
+import { FaEdit } from "react-icons/fa";
 
 const AdminPage = () => {
   const [users, setUsers] = useState([]);
@@ -23,6 +24,7 @@ const AdminPage = () => {
     description: "",
   });
   const [selectedEventId, setSelectedEventId] = useState("");
+  const [editableEvent, setEditableEvent] = useState(null);
   const api = "https://geo-backend-aspq.onrender.com";
   /* http://localhost:3333 */
 
@@ -52,7 +54,11 @@ const AdminPage = () => {
 
   const handleEventChange = (e) => {
     const { name, value } = e.target;
-    setNewEvent({ ...newEvent, [name]: value });
+    if (editableEvent) {
+      setEditableEvent({ ...editableEvent, [name]: value });
+    } else {
+      setNewEvent({ ...newEvent, [name]: value });
+    }
   };
 
   const handleEventSubmit = async (e) => {
@@ -61,6 +67,35 @@ const AdminPage = () => {
       const resp = await axios.post(`${api}/events/create`, newEvent);
       setNewEvent({ title: "", date: "", location: "", description: "" });
       toast.success(resp.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEventUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      const resp = await axios.put(
+        `${api}/events/update/${editableEvent._id}`,
+        editableEvent
+      );
+      setEditableEvent(null);
+      toast.success(resp.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEventEdit = (event) => {
+    setEditableEvent(event);
+  };
+
+  const handleEventDelete = async (id) => {
+    try {
+      const resp = await axios.delete(`${api}/events/delete/${id}`);
+      toast.success(resp.data.message);
+      // Atualiza a lista de eventos
+      setEvents(events.filter((event) => event._id !== id));
     } catch (error) {
       console.log(error);
     }
@@ -92,14 +127,14 @@ const AdminPage = () => {
 
   return (
     <div className="admin-page">
-      <h1>Criar Evento</h1>
-      <form onSubmit={handleEventSubmit}>
+      <h1>{editableEvent ? "Editar Evento" : "Criar Evento"}</h1>
+      <form onSubmit={editableEvent ? handleEventUpdate : handleEventSubmit}>
         <div className="form-container">
           <input
             type="text"
             name="title"
             placeholder="Título"
-            value={newEvent.title}
+            value={editableEvent ? editableEvent.title : newEvent.title}
             onChange={handleEventChange}
             required
           />
@@ -108,7 +143,7 @@ const AdminPage = () => {
           <input
             type="datetime-local"
             name="date"
-            value={newEvent.date}
+            value={editableEvent ? editableEvent.date : newEvent.date}
             onChange={handleEventChange}
             required
           />
@@ -118,7 +153,7 @@ const AdminPage = () => {
             type="text"
             name="location"
             placeholder="Localização"
-            value={newEvent.location}
+            value={editableEvent ? editableEvent.location : newEvent.location}
             onChange={handleEventChange}
             required
           />
@@ -127,10 +162,14 @@ const AdminPage = () => {
           <textarea
             name="description"
             placeholder="Descrição"
-            value={newEvent.description}
+            value={
+              editableEvent ? editableEvent.description : newEvent.description
+            }
             onChange={handleEventChange}></textarea>
         </div>
-        <button type="submit">Criar Evento</button>
+        <button type="submit">
+          {editableEvent ? "Atualizar Evento" : "Criar Evento"}
+        </button>
       </form>
       <h1>Eventos</h1>
       <table className="users-table">
@@ -155,6 +194,16 @@ const AdminPage = () => {
                   title="Exportar Usuários"
                   onClick={() => exportToExcel(event._id)}>
                   <IoMdDownload />
+                </button>
+                <button
+                  title="Editar Evento"
+                  onClick={() => handleEventEdit(event)}>
+                  <FaEdit />
+                </button>
+                <button
+                  title="Deletar Evento"
+                  onClick={() => handleEventDelete(event._id)}>
+                  <IoMdTrash />
                 </button>
               </td>
             </tr>
