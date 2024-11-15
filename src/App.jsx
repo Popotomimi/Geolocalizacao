@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 // React-Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CheckOutPage from "./pages/CheckOutPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <ToastContainer autoClose={4000} position="top-center" />
       <Routes>
         <Route path="/" element={<MapPage />} />
+        <Route path="/checkout" element={<CheckOutPage />} />
         <Route path="/admin" element={<AdminPage />} />
       </Routes>
       <Footer />
