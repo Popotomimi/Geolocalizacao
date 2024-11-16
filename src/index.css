@@ -147,6 +147,7 @@ nav li a {
   display: flex;
   flex-direction: column;
   border: none !important;
+  border-bottom: 1px solid #000 !important;
 }
 
 .actions button {
