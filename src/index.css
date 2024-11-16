@@ -20,7 +20,7 @@ h1 {
   text-align: center;
 }
 
-button {
+.btn {
   padding: 10px;
   background-color: #222;
   color: #fff;
@@ -33,7 +33,7 @@ button {
   transition: 0.5s;
 }
 
-button:hover {
+.btn:hover {
   box-shadow: 1px 1px 5px 1px #c3c3c3;
   background-color: #fff;
   color: #222;
@@ -141,6 +141,54 @@ nav li a {
 .users-table td {
   background-color: #c3c3c3;
   color: #222;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  border: none !important;
+}
+
+.actions button {
+  margin-bottom: 5px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 5px;
+  transform: 0.5s;
+  transition: 0.5s;
+  border: solid 1px #222;
+  border-radius: 5px;
+}
+
+.btn-export {
+  background-color: #0e76a8;
+}
+
+.btn-export:hover {
+  background-color: #fff;
+  color: #0e76a8;
+  border-color: #0e76a8;
+}
+
+.btn-edit {
+  background-color: #222;
+}
+
+.btn-edit:hover {
+  background-color: #fff;
+  color: #222;
+  border-color: #222;
+}
+
+.btn-delete {
+  background-color: #ff6f61;
+}
+
+.btn-delete:hover {
+  background-color: #fff;
+  color: #ff6f61;
+  border-color: #ff6f61;
 }
 
 /* Footer */

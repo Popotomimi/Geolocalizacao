@@ -2,21 +2,30 @@ const User = require("../models/User");
 
 module.exports = class userController {
   static async checkout(req, res) {
-    const { phone, pix, datetime, eventId } = req.body;
-
-    if (!phone || !pix || !datetime || !eventId) {
+    const { name, phone, pix, datetime, eventId } = req.body;
+    if (!name || !phone || !pix || !datetime || !eventId) {
       return res
         .status(422)
         .json({ message: "Todos os campos são obrigatórios!" });
     }
-
-    const userExists = await User.findOne({ phone: phone });
-
-    if (!userExists) {
-      res.status(422).json({
-        message: "Telefone não encontrado, verifique se digitou corretamente!",
-      });
-      return;
+    try {
+      const userExists = await User.findOne({ phone: phone });
+      if (!userExists) {
+        return res.status(422).json({
+          message:
+            "Telefone não encontrado, verifique se digitou corretamente!",
+        });
+      }
+      userExists.name = name;
+      userExists.pix = pix;
+      userExists.datetime = datetime;
+      userExists.eventId = eventId;
+      await userExists.save();
+      res.status(200).json({ message: "Checkout realizado com sucesso!" });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Ocorreu um erro ao realizar o checkout." });
     }
   }
 

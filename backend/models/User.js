@@ -9,7 +9,7 @@ const User = mongoose.model(
         type: String,
         required: true,
       },
-      email: {
+      phone: {
         type: String,
         required: true,
       },
@@ -25,6 +25,10 @@ const User = mongoose.model(
         type: Schema.Types.ObjectId,
         ref: "Event",
         required: true,
+      },
+      pix: {
+        type: String,
+        required: false,
       },
     },
     { timestamps: true }

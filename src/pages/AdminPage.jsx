@@ -167,7 +167,7 @@ const AdminPage = () => {
             }
             onChange={handleEventChange}></textarea>
         </div>
-        <button type="submit">
+        <button className="btn" type="submit">
           {editableEvent ? "Atualizar Evento" : "Criar Evento"}
         </button>
       </form>
@@ -189,18 +189,21 @@ const AdminPage = () => {
               <td>{new Date(event.date).toLocaleString()}</td>
               <td>{event.location}</td>
               <td>{event.description}</td>
-              <td>
+              <td className="actions">
                 <button
+                  className="btn-export"
                   title="Exportar Usuários"
                   onClick={() => exportToExcel(event._id)}>
                   <IoMdDownload />
                 </button>
                 <button
+                  className="btn-edit"
                   title="Editar Evento"
                   onClick={() => handleEventEdit(event)}>
                   <FaEdit />
                 </button>
                 <button
+                  className="btn-delete"
                   title="Deletar Evento"
                   onClick={() => handleEventDelete(event._id)}>
                   <IoMdTrash />

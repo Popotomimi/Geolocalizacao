@@ -71,6 +71,10 @@ const MapPage = () => {
             };
             const resp = await axios.post(`${api}/users/register`, user);
             toast.success(resp.data.message);
+            // Limpar campos do formulário após envio bem-sucedido
+            setName("");
+            setPhone("");
+            setSelectedEventId("");
           } catch (error) {
             console.log(error);
           } finally {
@@ -101,6 +105,7 @@ const MapPage = () => {
           <label>Digite seu nome</label>
           <input
             type="text"
+            value={name}
             placeholder="Nome"
             required
             onChange={(e) => setName(e.target.value)}
@@ -110,6 +115,7 @@ const MapPage = () => {
           <label>Digite seu Número de telefone</label>
           <input
             type="text"
+            value={phone}
             placeholder="Número de telefone"
             required
             onChange={(e) => setPhone(e.target.value)}
@@ -130,11 +136,11 @@ const MapPage = () => {
           </select>
         </div>
         {isButtonDisabled ? (
-          <button id="btn" disabled>
+          <button className="btn" id="btn" disabled>
             Aguarde...
           </button>
         ) : (
-          <button id="btn" type="submit">
+          <button className="btn" id="btn" type="submit">
             Registrar
           </button>
         )}

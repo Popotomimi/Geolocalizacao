@@ -16,6 +16,7 @@ const CheckOutPage = () => {
   });
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState(null);
   const [pix, setPix] = useState("");
@@ -44,11 +45,6 @@ const CheckOutPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsButtonDisabled(true);
-
-    toast.warn(`Telefone: ${phone} - Pix: ${pix}`);
-    setIsButtonDisabled(false);
-
-    /*
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -69,14 +65,19 @@ const CheckOutPage = () => {
             const user = {
               name,
               phone,
+              pix,
               location: address,
               datetime: newTimestamp,
               eventId: selectedEventId,
             };
-            const resp = await axios.post(`${api}/users/register`, user);
+            const resp = await axios.post(`${api}/users/checkout`, user);
             toast.success(resp.data.message);
+            setName("");
+            setPhone("");
+            setPix("");
+            setSelectedEventId("");
           } catch (error) {
-            console.log(error);
+            toast.error(error.response.data.message);
           } finally {
             setIsButtonDisabled(false);
           }
@@ -95,7 +96,6 @@ const CheckOutPage = () => {
       console.error("Geolocation is not supported by your browser.");
       setIsButtonDisabled(false);
     }
-    */
   };
 
   return (
@@ -103,9 +103,20 @@ const CheckOutPage = () => {
       <h1>Faça o Check out</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-container">
+          <label>Digite seu Nome</label>
+          <input
+            type="text"
+            value={name}
+            placeholder="Nome"
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="form-container">
           <label>Digite seu Número de telefone</label>
           <input
             type="text"
+            value={phone}
             placeholder="Número de telefone"
             required
             onChange={(e) => setPhone(e.target.value)}
@@ -115,6 +126,7 @@ const CheckOutPage = () => {
           <label>Digite sua chave Pix</label>
           <input
             type="text"
+            value={pix}
             placeholder="Chave pix"
             required
             onChange={(e) => setPix(e.target.value)}
@@ -135,11 +147,11 @@ const CheckOutPage = () => {
           </select>
         </div>
         {isButtonDisabled ? (
-          <button id="btn" disabled>
+          <button className="btn" id="btn" disabled>
             Aguarde...
           </button>
         ) : (
-          <button id="btn" type="submit">
+          <button className="btn" id="btn" type="submit">
             Registrar
           </button>
         )}
