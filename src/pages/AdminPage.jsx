@@ -1,16 +1,7 @@
-// Hooks
 import React, { useState, useEffect } from "react";
-
-// Axios
 import axios from "axios";
-
-// XLSX
 import * as XLSX from "xlsx";
-
-// Toastfy
 import { toast } from "react-toastify";
-
-// Icons
 import { IoMdDownload, IoMdTrash } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
 
@@ -28,6 +19,15 @@ const AdminPage = () => {
   const api = "https://geo-backend-aspq.onrender.com";
   /* http://localhost:3333 */
 
+  const fetchEvents = async () => {
+    try {
+      const response = await axios.get(`${api}/events/getall`);
+      setEvents(response.data.events);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -38,18 +38,7 @@ const AdminPage = () => {
       }
     };
     getUsers();
-  }, []);
-
-  useEffect(() => {
-    const getEvents = async () => {
-      try {
-        const response = await axios.get(`${api}/events/getall`);
-        setEvents(response.data.events);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getEvents();
+    fetchEvents();
   }, []);
 
   const handleEventChange = (e) => {
@@ -67,6 +56,7 @@ const AdminPage = () => {
       const resp = await axios.post(`${api}/events/create`, newEvent);
       setNewEvent({ title: "", date: "", location: "", description: "" });
       toast.success(resp.data.message);
+      fetchEvents();
     } catch (error) {
       console.log(error);
     }
@@ -81,6 +71,7 @@ const AdminPage = () => {
       );
       setEditableEvent(null);
       toast.success(resp.data.message);
+      fetchEvents();
     } catch (error) {
       console.log(error);
     }
@@ -94,8 +85,7 @@ const AdminPage = () => {
     try {
       const resp = await axios.delete(`${api}/events/delete/${id}`);
       toast.success(resp.data.message);
-      // Atualiza a lista de eventos
-      setEvents(events.filter((event) => event._id !== id));
+      fetchEvents();
     } catch (error) {
       console.log(error);
     }
@@ -107,7 +97,6 @@ const AdminPage = () => {
         ...userData,
         eventId: selectedEventId,
       });
-      // Atualizar a lista de usuários ou fazer outra ação
     } catch (error) {
       console.log(error);
     }
