@@ -4,13 +4,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Pages
 import MapPage from "./pages/MapPage";
 import AdminPage from "./pages/AdminPage";
+import CheckOutPage from "./pages/CheckOutPage";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 // React-Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CheckOutPage from "./pages/CheckOutPage";
+import EventDetail from "./pages/EventDetail";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<MapPage />} />
         <Route path="/checkout" element={<CheckOutPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/event/:id" element={<EventDetail />} />
       </Routes>
       <Footer />
     </BrowserRouter>

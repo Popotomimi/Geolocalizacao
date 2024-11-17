@@ -1,7 +1,19 @@
+// Hooks
 import React, { useState, useEffect } from "react";
+
+// Axios
 import axios from "axios";
+
+// React router Dom
+import { Link } from "react-router-dom";
+
+// XLSX
 import * as XLSX from "xlsx";
+
+// React Toastify
 import { toast } from "react-toastify";
+
+// Icons
 import { IoMdDownload, IoMdTrash } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
 
@@ -174,7 +186,9 @@ const AdminPage = () => {
         <tbody>
           {events.map((event) => (
             <tr key={event._id}>
-              <td>{event.title}</td>
+              <td>
+                <Link to={`/event/${event._id}`}>{event.title}</Link>
+              </td>
               <td>{new Date(event.date).toLocaleString()}</td>
               <td>{event.location}</td>
               <td>{event.description}</td>

@@ -192,6 +192,18 @@ nav li a {
   border-color: #ff6f61;
 }
 
+/* EventDetail */
+
+.users-container {
+  text-align: center;
+  margin: 10px;
+}
+
+.not-pix {
+  font-size: 25px;
+  color: #ff6f61;
+}
+
 /* Footer */
 
 .github {
