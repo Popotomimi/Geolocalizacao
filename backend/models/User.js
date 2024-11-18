@@ -7,7 +7,7 @@ const User = mongoose.model(
     {
       name: {
         type: String,
-        required: true,
+        required: false,
       },
       phone: {
         type: String,
@@ -15,11 +15,19 @@ const User = mongoose.model(
       },
       location: {
         type: String,
-        required: true,
+        required: false,
       },
       datetime: {
         type: String,
-        required: true,
+        required: false,
+      },
+      datetimecheckout: {
+        type: String,
+        required: false,
+      },
+      locationcheckout: {
+        type: String,
+        required: false,
       },
       eventId: {
         type: Schema.Types.ObjectId,

@@ -16,7 +16,6 @@ const CheckOutPage = () => {
   });
 
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState(null);
   const [pix, setPix] = useState("");
@@ -63,7 +62,6 @@ const CheckOutPage = () => {
               (component) => component.types.includes("route")
             ).long_name;
             const user = {
-              name,
               phone,
               pix,
               location: address,
@@ -72,7 +70,6 @@ const CheckOutPage = () => {
             };
             const resp = await axios.post(`${api}/users/checkout`, user);
             toast.success(resp.data.message);
-            setName("");
             setPhone("");
             setPix("");
             setSelectedEventId("");
@@ -102,16 +99,6 @@ const CheckOutPage = () => {
     <div className="container">
       <h1>Faça o Check out</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-container">
-          <label>Digite seu Nome</label>
-          <input
-            type="text"
-            value={name}
-            placeholder="Nome"
-            required
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
         <div className="form-container">
           <label>Digite seu Número de telefone</label>
           <input
