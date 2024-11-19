@@ -71,7 +71,6 @@ const MapPage = () => {
             };
             const resp = await axios.post(`${api}/users/register`, user);
             toast.success(resp.data.message);
-            // Limpar campos do formulário após envio bem-sucedido
             setName("");
             setPhone("");
             setSelectedEventId("");
@@ -145,6 +144,7 @@ const MapPage = () => {
           </button>
         )}
       </form>
+
       {isLoaded ? (
         <div className="map-container">
           <GoogleMap

@@ -192,6 +192,10 @@ nav li a {
   border-color: #ff6f61;
 }
 
+.loading {
+  border: none;
+}
+
 /* EventDetail */
 
 .users-container {

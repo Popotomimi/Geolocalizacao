@@ -40,14 +40,23 @@ const EventDetail = () => {
       <table className="users-table">
         <thead>
           <tr>
-            <th>Nome</th> <th>Telefone</th> <th>Localização</th> <th>PIX</th>
+            <th>Nome</th> <th>Check-in</th> <th>Check-out</th> <th>PIX</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <tr key={user._id}>
-              <td>{user.name}</td> <td>{user.phone}</td>
-              <td>{user.location}</td>{" "}
+              <td>{user.name}</td> <td>{user.datetime}</td>
+              <td>
+                {user.datetimecheckout ? (
+                  user.datetimecheckout
+                ) : (
+                  <IoMdCloseCircleOutline
+                    title="Não Realizou o check-out ainda"
+                    className="not-pix"
+                  />
+                )}
+              </td>{" "}
               <td>
                 {user.pix ? (
                   user.pix

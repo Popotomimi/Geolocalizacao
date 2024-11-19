@@ -28,6 +28,7 @@ const AdminPage = () => {
   });
   const [selectedEventId, setSelectedEventId] = useState("");
   const [editableEvent, setEditableEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
   const api = "https://geo-backend-aspq.onrender.com";
   /* http://localhost:3333 */
 
@@ -37,6 +38,8 @@ const AdminPage = () => {
       setEvents(response.data.events);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,17 +106,6 @@ const AdminPage = () => {
     }
   };
 
-  const handleUserRegistration = async (userData) => {
-    try {
-      await axios.post(`${api}/users/register`, {
-        ...userData,
-        eventId: selectedEventId,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const exportToExcel = async (eventId) => {
     try {
       const response = await axios.get(`${api}/users/getbyevent/${eventId}`);
@@ -173,49 +165,58 @@ const AdminPage = () => {
         </button>
       </form>
       <h1>Eventos</h1>
-      <table className="users-table">
-        <thead>
-          <tr>
-            <th>Título</th>
-            <th>Data</th>
-            <th>Localização</th>
-            <th>Descrição</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {events.map((event) => (
-            <tr key={event._id}>
-              <td>
-                <Link to={`/event/${event._id}`}>{event.title}</Link>
-              </td>
-              <td>{new Date(event.date).toLocaleString()}</td>
-              <td>{event.location}</td>
-              <td>{event.description}</td>
-              <td className="actions">
-                <button
-                  className="btn-export"
-                  title="Exportar Usuários"
-                  onClick={() => exportToExcel(event._id)}>
-                  <IoMdDownload />
-                </button>
-                <button
-                  className="btn-edit"
-                  title="Editar Evento"
-                  onClick={() => handleEventEdit(event)}>
-                  <FaEdit />
-                </button>
-                <button
-                  className="btn-delete"
-                  title="Deletar Evento"
-                  onClick={() => handleEventDelete(event._id)}>
-                  <IoMdTrash />
-                </button>
-              </td>
+      {loading ? (
+        <div>
+          <h2>Carregando...</h2>
+          <iframe
+            src="https://giphy.com/embed/3oEjI6SIIHBdRxXI40"
+            className="loading"></iframe>
+        </div>
+      ) : (
+        <table className="users-table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Data</th>
+              <th>Localização</th>
+              <th>Descrição</th>
+              <th>Ações</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {events.map((event) => (
+              <tr key={event._id}>
+                <td>
+                  <Link to={`/event/${event._id}`}>{event.title}</Link>
+                </td>
+                <td>{new Date(event.date).toLocaleString()}</td>
+                <td>{event.location}</td>
+                <td>{event.description}</td>
+                <td className="actions">
+                  <button
+                    className="btn-export"
+                    title="Exportar Usuários"
+                    onClick={() => exportToExcel(event._id)}>
+                    <IoMdDownload />
+                  </button>
+                  <button
+                    className="btn-edit"
+                    title="Editar Evento"
+                    onClick={() => handleEventEdit(event)}>
+                    <FaEdit />
+                  </button>
+                  <button
+                    className="btn-delete"
+                    title="Deletar Evento"
+                    onClick={() => handleEventDelete(event._id)}>
+                    <IoMdTrash />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
