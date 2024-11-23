@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-
 // API Google
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
-
 // Axios
 import axios from "axios";
-
 // React-toastify
 import { toast } from "react-toastify";
+// React Input Mask
+import InputMask from "react-input-mask";
 
 const CheckOutPage = () => {
   const { isLoaded } = useJsApiLoader({
@@ -101,13 +100,14 @@ const CheckOutPage = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-container">
           <label>Digite seu Número de telefone</label>
-          <input
-            type="text"
+          <InputMask
+            mask="(99) 99999-9999"
             value={phone}
-            placeholder="Número de telefone"
+            placeholder="(11) 99999-9999"
             required
-            onChange={(e) => setPhone(e.target.value)}
-          />
+            onChange={(e) => setPhone(e.target.value)}>
+            {(inputProps) => <input type="text" {...inputProps} />}
+          </InputMask>
         </div>
         <div className="form-container">
           <label>Digite sua chave Pix</label>
