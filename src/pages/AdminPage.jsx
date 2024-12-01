@@ -169,6 +169,7 @@ const AdminPage = () => {
         <div>
           <h2>Carregando...</h2>
           <iframe
+            disabled
             src="https://giphy.com/embed/3oEjI6SIIHBdRxXI40"
             className="loading"></iframe>
         </div>
