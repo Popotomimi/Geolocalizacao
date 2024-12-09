@@ -26,7 +26,6 @@ const AdminPage = () => {
     location: "",
     description: "",
   });
-  const [selectedEventId, setSelectedEventId] = useState("");
   const [editableEvent, setEditableEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const api = "https://geo-backend-aspq.onrender.com";
