@@ -4,6 +4,9 @@ import { useState, useContext } from "react";
 // Context
 import { Context } from "../context/UserContext";
 
+// Img
+import EventsLogin from "../assets/img/eventsLogin.jpg";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,6 +24,7 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      <img src={EventsLogin} alt="Imagem sobre eventos" />
       <h1>Fazer Login</h1>
       <form onSubmit={handleLogin}>
         <div className="form-container">
