@@ -46,7 +46,14 @@ function App() {
               </PrivateRoute>
             }
           />{" "}
-          <Route path="/event/:id" element={<EventDetail />} />{" "}
+          <Route
+            path="/event/:id"
+            element={
+              <PrivateRoute>
+                <EventDetail />
+              </PrivateRoute>
+            }
+          />{" "}
           <Route path="/login" element={<Login />} />{" "}
         </Routes>{" "}
         <Footer />{" "}

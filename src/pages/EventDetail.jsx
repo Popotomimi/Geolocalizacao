@@ -14,6 +14,7 @@ const EventDetail = () => {
   const { id } = useParams();
   const [users, setUsers] = useState([]);
   const api = "https://geo-backend-aspq.onrender.com";
+  const [display, setDisplay] = useState(false);
 
   useEffect(() => {
     const searchId = async () => {
@@ -33,6 +34,10 @@ const EventDetail = () => {
     };
     searchId();
   }, [id]);
+
+  const handlePay = async () => {
+    setDisplay(true);
+  };
 
   return (
     <div className="users-container">
@@ -71,6 +76,23 @@ const EventDetail = () => {
           ))}
         </tbody>
       </table>
+      <button onClick={handlePay} className="btn">
+        Pagar
+      </button>
+      <div className="pay-container">
+        {display &&
+          users
+            .filter((user) => user.pix)
+            .map((user) => (
+              <div key={user._id} className="qrcode-card">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${user.pix}`}
+                  alt={user.name}
+                />
+                <h3>{user.name}</h3>
+              </div>
+            ))}
+      </div>
     </div>
   );
 };
