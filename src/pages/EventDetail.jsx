@@ -1,24 +1,15 @@
-// Hooks
 import React, { useEffect, useState } from "react";
-
-// React Router Dom
 import { useParams } from "react-router-dom";
-
-// Axios
 import axios from "axios";
-
-// Icons
 import { IoMdCloseCircleOutline } from "react-icons/io";
-
-// Biblioteca de QR Code
-import QRCode from "qrcode";
+import { QRCodeSVG } from "qrcode.react";
 
 const EventDetail = () => {
   const { id } = useParams();
   const [users, setUsers] = useState([]);
-  const [qrCodes, setQrCodes] = useState({});
   const api = "https://geo-backend-aspq.onrender.com";
   const [display, setDisplay] = useState(false);
+  let cidade = "São Paulo";
 
   useEffect(() => {
     const searchId = async () => {
@@ -39,44 +30,13 @@ const EventDetail = () => {
     searchId();
   }, [id]);
 
-  const generatePixQRCode = async (pixData, value) => {
-    const pixCode = `00020126330014BR.GOV.BCB.PIX0114${pixData}5204000053039865802BR5925Nome do Recebedor6009Cidade54060000002506304`;
-
-    const calculateCRC16 = (pixString) => {
-      let crc = 0xffff;
-      for (let pos = 0; pos < pixString.length; pos++) {
-        crc ^= pixString.charCodeAt(pos) << 8;
-        for (let i = 0; i < 8; i++) {
-          if ((crc & 0x8000) !== 0) {
-            crc = (crc << 1) ^ 0x1021;
-          } else {
-            crc = crc << 1;
-          }
-        }
-      }
-      return (crc & 0xffff).toString(16).toUpperCase();
-    };
-
-    const crc16 = calculateCRC16(pixCode);
-    const finalPixCode = pixCode + crc16;
-
-    try {
-      const url = await QRCode.toDataURL(finalPixCode);
-      return url;
-    } catch (error) {
-      console.error(error);
-      return "";
-    }
-  };
-
   const handlePay = async () => {
     setDisplay(true);
-    const qrCodesTemp = {};
-    for (const user of users.filter((user) => user.pix)) {
-      const qrCodeUrl = await generatePixQRCode(user.pix, "0000000250"); // Exemplo de valor fixo
-      qrCodesTemp[user._id] = qrCodeUrl;
-    }
-    setQrCodes(qrCodesTemp);
+  };
+
+  const generatePixCode = (user) => {
+    const payload = `00020126360014BR.GOV.BCB.PIX0114${user.pix}5204000053039865802BR5925${user.name}6009${cidade}5802BR540000005802BR5902BR6007BRBR6230OBGQRCODE7651BRBR${user.name}`;
+    return payload;
   };
 
   return (
@@ -129,13 +89,8 @@ const EventDetail = () => {
             .filter((user) => user.pix)
             .map((user) => (
               <div key={user._id} className="qrcode-card">
-                {" "}
-                {qrCodes[user._id] ? (
-                  <img src={qrCodes[user._id]} alt={user.name} />
-                ) : (
-                  "Gerando QR Code..."
-                )}{" "}
-                <h3>{user.name}</h3>{" "}
+                <QRCodeSVG value={generatePixCode(user)} />
+                <h3>{user.name}</h3>
               </div>
             ))}
       </div>
