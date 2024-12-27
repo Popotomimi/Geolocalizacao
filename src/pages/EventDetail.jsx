@@ -9,7 +9,7 @@ const EventDetail = () => {
   const [users, setUsers] = useState([]);
   const api = "https://geo-backend-aspq.onrender.com";
   const [display, setDisplay] = useState(false);
-  let cidade = "São Paulo";
+  let cidade = "SAO PAULO";
 
   useEffect(() => {
     const searchId = async () => {
@@ -34,8 +34,23 @@ const EventDetail = () => {
     setDisplay(true);
   };
 
+  const removeSpecialCharsAndUppercase = (str) => {
+    return str
+      .normalize("NFD")
+      .replace(/[^a-zA-Z0-9\s\u0300-\u036f]/g, "")
+      .toUpperCase();
+  };
+
+  const truncateString = (str, maxLength) => {
+    return str.length > maxLength ? str.slice(0, maxLength) : str;
+  };
+
   const generatePixCode = (user) => {
-    const payload = `00020126360014BR.GOV.BCB.PIX0114${user.pix}5204000053039865802BR5925${user.name}6009${cidade}5802BR540000005802BR5902BR6007BRBR6230OBGQRCODE7651BRBR${user.name}`;
+    const pix = removeSpecialCharsAndUppercase(user.pix);
+    let name = removeSpecialCharsAndUppercase(user.name);
+    name = truncateString(name, 25);
+
+    const payload = `00020126420014br.gov.bcb.pix0111${pix}0205Teste5204000053039865802BR5925${name}6009${cidade}62290525a67e0HyNJlAGyQiu1FkPeekCG63043A2C`;
     return payload;
   };
 
@@ -80,6 +95,7 @@ const EventDetail = () => {
           ))}
         </tbody>
       </table>
+      <QRCodeSVG value="00020126420014br.gov.bcb.pix0111496650628080205Teste5204000053039865802BR5925LETICIA VITORIA SANTOS DE6009SAO PAULO62290525a67e0HyNJlAGyQiu1FkPeekCG63043A2C" />
       <button onClick={handlePay} className="btn">
         Pagar
       </button>
